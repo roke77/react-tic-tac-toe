@@ -109,7 +109,6 @@ class Game extends React.Component {
   render() {
     const history = this.state.history;
     const current = history[this.state.stepNumber];
-    const winnerLine = calculateWinnerLine(current.squares);
 
     const moves = history.map((step, move) => {
       const col = (step.lastSquare % 3);
@@ -127,9 +126,17 @@ class Game extends React.Component {
       );
     });
 
+    const winnerLine = calculateWinnerLine(current.squares);
+    const isDraw = !current.squares.some(element => element === null);
+
+    let status = `Next player: ${(this.state.xIsNext ? 'X' : 'O')}`;
+    if (winnerLine)
+      status = `Winner: ${this.state.xIsNext ? 'O' : 'X'}`;
+    if (isDraw)
+      status = "The match is a DRAW!";
+
     const sortButtonText = this.state.ascOrder ? 'Sort DESC' : 'Sort ASC';
     const sortedMoves = this.state.ascOrder ? moves : moves.reverse();
-    const status = winnerLine ? `Winner: ${this.state.xIsNext ? 'O' : 'X'}` : `Next player: ${(this.state.xIsNext ? 'X' : 'O')}`;
 
     return (
       <div className="game">
