@@ -1,5 +1,7 @@
 import React from 'react';
 import Board from './Board.js';
+import History from './History.js';
+import Info from './Info.js';
 
 function calculateWinnerLine(squares) {
   const lines = [
@@ -28,7 +30,6 @@ class Game extends React.Component {
       }],
       stepNumber: 0,
       xIsNext: true,
-      ascOrder: true,
     };
   }
 
@@ -57,43 +58,10 @@ class Game extends React.Component {
     });
   }
 
-  handleSortClick() {
-    this.setState({
-      ascOrder: !this.state.ascOrder,
-    });
-  }
-
   render() {
-    const history = this.state.history;
-    const current = history[this.state.stepNumber];
-
+    const { history, stepNumber, xIsNext } = this.state;
+    const current = history[stepNumber];
     const winnerLine = calculateWinnerLine(current.squares);
-    const isDraw = !current.squares.some(element => element === null);
-
-    let status = `Next player: ${(this.state.xIsNext ? 'X' : 'O')}`;
-    if (winnerLine)
-      status = `Winner: ${this.state.xIsNext ? 'O' : 'X'}`;
-    if (isDraw)
-      status = "The match is a DRAW!";
-
-    const moves = history.map((step, move) => {
-      const col = (step.lastSquare % 3);
-      const row = Math.floor(step.lastSquare / 3);
-      const moveButtonText = move ? `Go to move ${move} (${col},${row})` : 'Go to game start';
-      const isCurrentMove = (move === this.state.stepNumber);
-      return (
-        <li key={move}>
-          <button 
-            className={isCurrentMove ? 'current-move' : ''} 
-            onClick={() => this.jumpTo(move)}>
-            {moveButtonText}
-          </button>
-        </li>
-      );
-    });
-
-    const sortButtonText = this.state.ascOrder ? 'Sort DESC' : 'Sort ASC';
-    const sortedMoves = this.state.ascOrder ? moves : moves.reverse();
 
     return (
       <div className="game">
@@ -105,12 +73,18 @@ class Game extends React.Component {
           />
         </div>
         <div className="game-info">
-          <div>{status}</div>
-          <button
-            onClick={() => this.handleSortClick()}>
-            {sortButtonText}
-          </button>
-          <ol>{sortedMoves}</ol>
+          <Info
+            squares={current.squares}
+            winnerLine={winnerLine}
+            xIsNext={xIsNext}
+          />
+        </div>
+        <div className="game-history">
+          <History
+            history={history}
+            stepNumber={stepNumber}
+            jumpTo={(step) => this.jumpTo(step)}
+          />
         </div>
       </div>
     );
