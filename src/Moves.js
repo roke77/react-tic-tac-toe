@@ -11,7 +11,7 @@ const Moves = props => {
     return (
       <li key={move}>
         <button 
-          className={isCurrentMove ? 'current-move' : ''} 
+          className={isCurrentMove ? 'current-move' : ''}
           onClick={() => props.jumpTo(move)}>
           {moveButtonText}
         </button>
