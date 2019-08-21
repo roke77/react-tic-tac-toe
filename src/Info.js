@@ -5,7 +5,7 @@ const Info = props => {
   const { currentPlayer, nextPlayer, winnerLine, isDraw } = useGame();
 
   let status = "";
-  if (winnerLine())
+  if (winnerLine)
     status = `Winner: ${currentPlayer()}`;
   else if (isDraw())
     status = "The match is a DRAW!";

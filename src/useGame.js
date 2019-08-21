@@ -5,10 +5,9 @@ import { calculateWinnerLine } from './Utils.js';
 const useGame = () => {
   const [state, setState] = useContext(GameContext);
   const { history, stepNumber, xIsNext } = state;
-
-  const currentSquares = () => {
-    return history[stepNumber].squares;
-  }
+  
+  const currentSquares = history[stepNumber].squares;
+  const winnerLine = calculateWinnerLine(currentSquares);
 
   const currentPlayer = () => {
     return xIsNext ? 'O' : 'X';
@@ -18,17 +17,12 @@ const useGame = () => {
     return xIsNext ? 'X' : 'O';
   }
 
-  const winner = calculateWinnerLine(currentSquares());
-  const winnerLine = () => {
-    return winner;
-  }
-
   const isFull = () => {
-    return !currentSquares().some(square => square === null);
+    return !currentSquares.some(square => square === null);
   }
 
   const isDraw = () => {
-    return isFull() && !winner;
+    return isFull() && !winnerLine;
   }
 
   const jumpTo = step => {
