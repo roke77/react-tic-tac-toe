@@ -11,12 +11,7 @@ const History = props => {
         onClick={() => setAscOrder(!ascOrder)}>
         {sortButtonText}
       </button>
-      <Moves
-        ascOrder={ascOrder}
-        history={props.history}
-        stepNumber={props.stepNumber}
-        jumpTo={props.jumpTo}
-      />
+      <Moves ascOrder={ascOrder} />
     </div>
   );
 }

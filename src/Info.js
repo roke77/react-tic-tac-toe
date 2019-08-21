@@ -1,15 +1,16 @@
 import React from 'react';
+import useGame from './useGame.js';
 
 const Info = props => {
-  const isFull = !props.squares.some(square => square === null);
-  const isDraw = isFull && !props.winnerLine;
+  const { currentPlayer, nextPlayer, winnerLine, isDraw } = useGame();
 
-  let status = `Next player: ${(props.xIsNext ? 'X' : 'O')}`;
-
-  if (props.winnerLine)
-    status = `Winner: ${props.xIsNext ? 'O' : 'X'}`;
-  else if (isDraw)
+  let status = "";
+  if (winnerLine())
+    status = `Winner: ${currentPlayer()}`;
+  else if (isDraw())
     status = "The match is a DRAW!";
+  else
+    status = `Next player: ${nextPlayer()}`;
 
   return (
     <div>{status}</div>
